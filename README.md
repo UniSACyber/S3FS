@@ -1,2 +1,2 @@
 # SpaceSDN
-Research investigating SDN for Space Systems Security
+The simulation framework for SDN-based space systems
