@@ -8,16 +8,32 @@ For a detailed discussion of the S3FS framework refer to the following reference
 
 ## Simulation framework features:
 
-- **Simulated Walker Constellation:** The simulation comprises a Walker-Delta constellation of 20 satellites arranged in a typical orbit pattern around Earth. This is simulated using the Satellite Communications Toolbox of MATLAB with the following parameters: radius = 7200km, inclination = 70 degrees, number of orbital planes = 4, phasing = 1, and argument of latitute = 15 degrees. The orbital motion is simulated for 24 hours at per second resolution. 
+- **Simulated Walker Constellation:** The simulation comprises a Walker-Delta constellation of 20 satellites arranged in a typical orbit pattern around Earth (see figure below). This is simulated using the Satellite Communications Toolbox of MATLAB with the following parameters: radius = 7200km, inclination = 70 degrees, number of orbital planes = 4, phasing = 1, and argument of latitute = 15 degrees. The orbital motion is simulated for 24 hours at per second resolution. 
+    <p align="center">
+        <img src="graphics/walker.png" alt="ISL Connectivity Matrix for interval 7" width="400">
+    </p>
 - **SDN Network Simulation:** The simulation is based on a Software Defined Networking (SDN) architecture, where the network control plane is separated from the data forwarding elements. This allows for flexible configuration and management of the satellite network through programmable switches called OpenFlow switches. The framework utilizes the Mininet network simulation tool. 
 - **Dynamic Inter-Satellite Links (ISL):** The framework dynamically creates ISLs based on the relative positions of satellites in orbit, ensuring that communication links are established only when necessary for data exchange between satellites and ground stations. The connectivity between the network nodes (i.e., the satellites and the ground station), represented as adjacency metrices between the networks nodes, across all the simulation intervals is available as a 3D numpy array in the repository (`isldata.npy`).  
 
    - This ISL connectivity data has a reduced per-minute resolution and therefore has a (21 x 21 x 1441) shape and contains binary values indicating whether an ISL exists between two nodes at a given interval. The graphic below shows an example ISL connectivity matrix for a single simulation interval.
-   <p align="center">
-    <img src="graphics/isldata.png" alt="ISL Connectivity Matrix for interval 7" width="400">
-   </p>
-- **POX Controller:** The framework uses the POX controller to experiment with different routing protocols, allowing users to test and evaluate the performance of various networking strategies within the simulated environment. However, the framework can be run with an other suitable controller as well.
-- **Traffic Generation:** The simulation framework includes a traffic generation functionality that allows for the creation of normal network traffic and attack network traffic patterns between satellites and ground stations. The normal traffic is generated for the Earth Observation use case where data from the satellites are transmitted to ground station, while the attack traffic represents various types of cyber-attacks such as denial-of-service (DoS) attacks or reconnaisance attacks targeting the variuos elements of the satellite network.
-- **Simulation Metrics:** The simulation framework provides two sets of metrics that can be used to evaluate the performance of the simulated network. 
-   - The first set of metrics (stored in the file `metrics.csv`) track the number of network interfances added and removed, the elapsed CPU and wall time for the network reconfiguration, and to the duration for the traceability test between the satellites and the ground station. 
+    <p align="center">
+        <img src="graphics/isldata.png" alt="ISL Connectivity Matrix for interval 7" width="400">
+    </p>
+- **POX Controller:** The framework uses the POX controller to experiment with different routing protocols, allowing users to test and evaluate the performance of various networking strategies within the simulated environment. However, the framework can be run with an other suitable OpenFlow controller as well. 
+   - The default configuration of the POX controller uses the `forwarding.l2_learning`, `openflow.discovery`, `host_tracker`, and `openflow.spanning_tree` modules for network discovery and routing, but users can modify these settings or implement custom controllers and components as needed.
+- **Traffic Generation:** The simulation framework includes a traffic generation functionality that allows for the creation of normal network traffic and attack network traffic between satellites and ground stations. The normal traffic is generated for the Earth Observation use case where data from the satellites are transmitted to the ground station, while the attack traffic represents various types of cyber-attacks such as denial-of-service (DoS) attacks or reconnaisance attacks targeting the variuos elements of the satellite network.
+- **Simulation Metrics:** The framework provides two sets of metrics that can be used to evaluate the performance of the simulated network. 
+   - The first set of metrics (stored in the file `metrics.csv`) track the number of network interfances added and removed, the elapsed CPU and wall time for the network reconfiguration, and the duration for the traceability test between the satellites and the ground station. 
    - The second set of metrics (stored in the file `pingmetrics.csv`) tracks the traceability of the ground station from each satellite by pinging the ground station from each satellite. These metrics track the number of pings sent and received, as well at the minimum, maximum, average, and standard deviation round-trip time for each traceability test.
+
+## Using the simulation framework
+
+
+## Future work
+Some of the planned features to be added to S3FS include:
+- **ISL bandwidth variation:** The current implementation assumes that all ISLs have a fixed bandwidth. In future versions, we plan to add support for varying bandwidths across different ISLs based on factors such as distance or other physical properties of the links.
+- **Various use cases:** We aim to expand the simulation framework to include various use cases beyond the Earth Observation and the unicase payload dodwnload transmission. This could include scenarios involving data relay, satellite-to-satellite communication, or even more complex network configurations for specific applications.
+- **Enhanced traceability testing:** The current implementation includes basic traceability testing between satellites and ground stations using ICMP echo requests (ping). Future versions may incorporate more sophisticated methods to test the reliability and latency of these connections.
+- **Futher attack scenarios:** In addition to the current implementation of denial-of-service attacks, we aim to explore other types of cyber-attacks that could affect the performance of a satellite network, including SDN specific attacks and more.
+- **Realistic network stack and satellite protocols:** The current implementation uses a simplified model of the satellite network stack and protocols. In future versions, we aim to implement more realistic models that incorporate aspects of actual satellite communication systems.
+- **Other Enhancements:** We plan to continue enhancing the simulation framework with additional features such as support for different satellite constellations, adaptive routing algorithms, advanced network management capabilities, and a modular architecture that allows for easier extension and customization.
