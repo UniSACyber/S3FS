@@ -26,8 +26,6 @@ For a detailed discussion of the S3FS framework refer to the following reference
    - The first set of metrics (stored in the file `metrics.csv`) track the number of network interfances added and removed, the elapsed CPU and wall time for the network reconfiguration, and the duration for the traceability test between the satellites and the ground station. 
    - The second set of metrics (stored in the file `pingmetrics.csv`) tracks the traceability of the ground station from each satellite by pinging the ground station from each satellite. These metrics track the number of pings sent and received, as well at the minimum, maximum, average, and standard deviation round-trip time for each traceability test.
 
-## Using the simulation framework
-
 
 ## Future work
 Some of the planned features to be added to S3FS include:
