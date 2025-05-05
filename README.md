@@ -26,6 +26,27 @@ For a detailed discussion of the S3FS framework refer to the following reference
    - The first set of metrics (stored in the file `metrics.csv`) track the number of network interfances added and removed, the elapsed CPU and wall time for the network reconfiguration, and the duration for the traceability test between the satellites and the ground station. 
    - The second set of metrics (stored in the file `pingmetrics.csv`) tracks the traceability of the ground station from each satellite by pinging the ground station from each satellite. These metrics track the number of pings sent and received, as well at the minimum, maximum, average, and standard deviation round-trip time for each traceability test.
 
+## Using S3FS
+Here are the basic instructions to get going with the simulation framework
+- Run the POX controller
+   - Basic configuration `.pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down openflow.discovery host_tracker`
+   - With better loggting `pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down log.level --DEBUG samples.pretty_log openflow.discovery host_tracker info.packet_dump`
+- Set up your execution environment
+   - Set up a python virtual environment using your preferred tool e.g., `virtualenv`, `pyenv`, `pyenv-virtualenv`.
+   - Load the required python packages from the requirements file `pip install -r requirements.txt`
+- Modify the relevant parameters within the simulation script `s3fs.py`, in particular:
+   - **CONTROLLER_IP** - The IP address of the controller
+   - **SIMULATION_INTERVAL** - The sleep time between simulation intervals - the default is 60 seconds.
+   - **ISLDATA_FILE** - The ISL connectivity data file - the default is `isldata.npy`.
+   - Check out other relevant parameters to modify in the simulation script, including normal and attack traffic generation parameters
+- Run the simulation script `s3fs.py -t -r -a <attack> -i <interval>`
+   - `t` : this is the test mode where the simulation runs for 3 (out of 1440) intervals, with a 10 second sleep time, and in the normal traffic generation mode.
+   - `r` : this is the run mode where the simulation executes the full 1440 intervals with the default 60 seconds sleep time between intervals.
+   - `i <inteval>` : in this mode the simulation will run up to the specified interval.
+   - `a <attack>` : in this mode the simulation generates attack traffic based on the select attack type:
+     - 1 : Syn Flood attack using `hping3`
+     - 2 : Syn Flow Flood attack using `hping3`. This is a SYN flood with randomized source address to flood the OVS Switch flow tables
+     - 3 : Port Scan attack using `nmap`
 
 ## Future work
 Some of the planned features to be added to S3FS include:
