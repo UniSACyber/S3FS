@@ -4,7 +4,7 @@ This project developed a simulation framework for SDN-based space systems for th
 
 For a detailed discussion of the S3FS framework refer to the following reference publication:
 
-- Uhongora, U., Thinyane, M., & Law, YW. (2024) __"Development of an SDN-based Space Systems Simulation Framework for Intrusion Detection."__ IEEE International Conference on Cyber Security and Resilience (IEEE CSR), *__Forthcoming__*.
+- Uhongora, U., Thinyane, M., & Law, YW. (2025) __"Development of an SDN-based Space Systems Simulation Framework for Intrusion Detection."__ IEEE International Conference on Cyber Security and Resilience (IEEE CSR), 4-6 August 2025.
 
 ## Simulation framework features:
 
@@ -54,5 +54,6 @@ Some of the planned features to be added to S3FS include:
 - **Various use cases:** We aim to expand the simulation framework to include various use cases beyond the Earth Observation and the unicast payload download transmission. This could include scenarios involving data relay, satellite-to-satellite communication, or even more complex network configurations for specific applications.
 - **Enhanced traceability testing:** The current implementation includes basic traceability testing between satellites and the ground station using ICMP echo requests (ping). Future versions may incorporate more sophisticated methods to test the reliability and latency of these connections.
 - **Futher attack scenarios:** In addition to the current implementation of denial-of-service attacks, we aim to explore other types of cyber-attacks that could affect the performance of a satellite network, including SDN specific attacks.
+- **Programmable data plane:** Implementing a programmable data plane in S3FS will allow for more sophisticated traffic management and control over the satellite network. This includes support for Quality of Service (QoS) mechanisms to prioritize certain types of traffic over others. 
 - **Realistic network stack and satellite protocols:** The current implementation uses a simplified model of the satellite network stack and protocols. In future versions, we aim to implement more realistic models that incorporate aspects of actual satellite communication systems.
 - **Other Enhancements:** We plan to continue enhancing the simulation framework with additional features such as support for different satellite constellations, adaptive routing algorithms, advanced network management capabilities, and a modular architecture that allows for easier extension and customization.
