@@ -13,7 +13,7 @@ For a detailed discussion of the S3FS framework refer to the following reference
         <img src="graphics/walker.png" alt="ISL Connectivity Matrix for interval 7" width="400">
     </p>
 - **SDN Network Simulation:** The simulation is based on a Software Defined Networking (SDN) architecture, where the network control plane is separated from the data forwarding elements. This allows for flexible configuration and management of the satellite network through programmable switches called OpenFlow switches. The framework utilizes the Mininet network simulation tool. 
-- **Dynamic Inter-Satellite Links (ISL):** The framework dynamically creates ISLs based on the relative positions of satellites in orbit, ensuring that communication links are established only when necessary for data exchange between satellites and ground stations. The connectivity between the network nodes (i.e., the satellites and the ground station), represented as adjacency metrices between the networks nodes, across all the simulation intervals is available as a 3D numpy array in the repository (`isldata.npy`).  
+- **Dynamic Inter-Satellite Links (ISL):** The framework dynamically creates ISLs based on the relative positions of satellites in orbit, ensuring that communication links are established only when necessary for data exchange between satellites and ground stations. The connectivity between the network nodes (i.e., the satellites and the ground station), represented as adjacency metrices between the networks nodes, across all the simulation intervals is available as a 3D numpy array in the repository (`walker_delta_20.npy`).  
 
    - This ISL connectivity data has a reduced per-minute resolution and therefore has a (21 x 21 x 1441) shape and contains binary values indicating whether an ISL exists between two nodes at a given interval. The graphic below shows an example ISL connectivity matrix for a single simulation interval.
     <p align="center">
@@ -28,10 +28,12 @@ For a detailed discussion of the S3FS framework refer to the following reference
 
 ## Using S3FS
 Here are the basic instructions to get going with the simulation framework
+- Set up your virtual machine or physical machine. S3FS has been tested on Ubuntu 24.04 and later versions, but it should work on other Linux distributions as well.
 - Run the POX controller
    - Basic configuration `.pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down openflow.discovery host_tracker`
    - With better loggting `pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down log.level --DEBUG samples.pretty_log openflow.discovery host_tracker info.packet_dump`
 - Set up your execution environment
+   - Install mininet ``
    - Set up a python virtual environment using your preferred tool e.g., `virtualenv`, `pyenv`, `pyenv-virtualenv`.
    - Load the required python packages from the requirements file `pip install -r requirements.txt`
 - Modify the relevant parameters within the simulation script `s3fs.py`, in particular:
