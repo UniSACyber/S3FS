@@ -4,7 +4,7 @@ This project developed a simulation framework for SDN-based space systems for th
 
 For a detailed discussion of the S3FS framework refer to the following reference publication:
 
-- Uhongora, U., Thinyane, M., & Law, YW. (2025) __"Development of an SDN-based Space Systems Simulation Framework for Intrusion Detection."__ IEEE International Conference on Cyber Security and Resilience (IEEE CSR), 4-6 August 2025.
+- Uhongora, U., Thinyane, M., & Law, YW. (2025) __"Development of an SDN-based Space Systems Simulation Framework for Intrusion Detection."__ IEEE International Conference on Cyber Security and Resilience (IEEE CSR), 4-6 August 2025, Crete - Greece.
 
 ## Simulation framework features:
 
