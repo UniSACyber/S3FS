@@ -7,16 +7,31 @@ from mininet.net import Mininet
 from mininet.clean import Cleanup
 from mininet.node import RemoteController, Switch, OVSSwitch
 
-ISLDATA_FILE = 'data/walker_delta_20.npy'
-NUM_NODES = 21
-CONTROLLER_IP = '192.168.56.10'
-STOP_SIMULATION = False
-SIMULATION_INTERVAL = 60
-TMP_STORAGE_INTERVAL = 100
-PING_TIMEOUT = 5
-TESTING = False
+ISLDATA_FILE = 'data/walker_delta_20.npy' # Path to the ISL data file
+# ISL data file should be a numpy array with shape (NUM_NODES, NUM_NODES, NUM_INTERVALS)
+# where NUM_NODES is the number of nodes in the network and NUM_INTERVALS is the number of time intervals
 
-DO_DEBUG = True
+NUM_NODES = 21 # Number of nodes in the network
+# This should match the number of nodes in the ISL data file
+
+CONTROLLER_IP = '127.0.0.1' # IP address of the controller
+# This should be the IP address of the controller running POX, ONOS, ODL, or any other SDN controller
+# If you are running the controller on a different machine, change this to the appropriate IP address
+# If you are running the controller on the same machine, you can leave it as is
+
+BROADCAST_IP = '10.0.0.255' # Broadcast IP address for the network
+OPENFLOW_VERSION = 'OpenFlow14' # OpenFlow version to use
+SIMULATION_INTERVAL = 60 # Simulation interval in seconds
+# This is the sleep time between simulation intervals, it can be changed to a lower value for faster simulations
+# or a higher value for slower simulations, depending on the use case
+
+TMP_STORAGE_INTERVAL = 100 # Interval for temporary storage of metrics
+PING_TIMEOUT = 5 # Timeout for ping commands in seconds
+TESTING = False # If set to True, the simulation will run in the test mode with a shorter interval
+
+DO_DEBUG = True # If set to True, the simulation will print debug messages
+
+STOP_SIMULATION = False 
 
 # For normal traffic simulation
 TRANSMISSION_PORT = 5789
@@ -28,6 +43,7 @@ BUNDLE_SIZE = '20M'
 ATTACK_HOST = "h25"
 VICTIM_HOST = "h0"
 ATTACK_PACKETS_NUM = 100
+ATTACK_PORT = 8000
 
 class TheAttack(IntEnum):
     NONE = 0
@@ -96,7 +112,7 @@ def runSimulation(data, interval = 1440, attacking = TheAttack.NONE):
     Cleanup.cleanup()
     
     if DO_DEBUG: print('Info: Connecting to the controller')
-    c3 = RemoteController('c3', ip=CONTROLLER_IP, port=6633, protocols="OpenFlow14")
+    c3 = RemoteController('c3', ip=CONTROLLER_IP, port=6633, protocols=OPENFLOW_VERSION)
     SatNet = initializeNetwork(G) if attacking is TheAttack.NONE else initializeAttackNetwork(G)
     SatNet.addController(c3)
     
@@ -163,7 +179,7 @@ def runSimulation(data, interval = 1440, attacking = TheAttack.NONE):
         attackHost = SatNet.get(ATTACK_HOST)
         victimHost = SatNet.get(VICTIM_HOST)
         target_ip = victimHost.IP()
-        target_port = 8000
+        target_port = ATTACK_PORT
         
         victimHost.pexec(f'python -m http.server {target_port} &')
  
@@ -179,11 +195,11 @@ def runSimulation(data, interval = 1440, attacking = TheAttack.NONE):
                 attackHost.pexec(f'wget http://{target_ip}:{target_port}')
                 attackHost.pexec(f'hping3 -c {ATTACK_PACKETS_NUM} -U -d 120 -S -w 64 -p {target_port} --flood --rand-source {target_ip}')
             case TheAttack.SMURF:
-                None
+                attackHost.pexec(f'hping3 -1 --flood --spoof {target_ip} {BROADCAST_IP}')
             case TheAttack.PORT_SCAN:
-                None
+                attackHost.pexec(f'nmap -p0- -A -T4 {target_ip}')
             case _:
-                print(f'Error: This should not be possible')
+                if DO_DEBUG: print(f'Error: Unknown attack type {attacking}')
  
     simThread = threading.Thread(target=simulationThread)
     simThread.start()

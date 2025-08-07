@@ -30,16 +30,16 @@ For a detailed discussion of the S3FS framework refer to the following reference
 Here are the basic instructions to get going with the simulation framework
 - Set up your virtual machine or physical machine. S3FS has been tested on Ubuntu 24.04 and later versions, but it should work on other Linux distributions as well.
 - Run the POX controller
-   - Basic configuration `.pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down openflow.discovery host_tracker`
-   - With better loggting `pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down log.level --DEBUG samples.pretty_log openflow.discovery host_tracker info.packet_dump`
+   - Basic configuration `./pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down openflow.discovery host_tracker`
+   - With better loggting `./pox.py forwarding.l2_learning openflow.spanning_tree --no-flood --hold-down log.level --DEBUG samples.pretty_log openflow.discovery host_tracker info.packet_dump`
 - Set up your execution environment
-   - Install mininet ``
+   - Install required executables: `sudo apt install mininet hping3 nmap`
    - Set up a python virtual environment using your preferred tool e.g., `virtualenv`, `pyenv`, `pyenv-virtualenv`.
    - Load the required python packages from the requirements file `pip install -r requirements.txt`
 - Modify the relevant parameters within the simulation script `s3fs.py`, in particular:
    - **CONTROLLER_IP** - The IP address of the controller
    - **SIMULATION_INTERVAL** - The sleep time between simulation intervals - the default is 60 seconds.
-   - **ISLDATA_FILE** - The ISL connectivity data file - the default is `isldata.npy`.
+   - **ISLDATA_FILE** - The ISL connectivity data file - the default is `walker_delta_20.npy`.
    - Check out other relevant parameters to modify in the simulation script, including normal and attack traffic generation parameters
 - Run the simulation script `s3fs.py -t -r -a <attack> -i <interval>`
    - `t` : this is the test mode where the simulation runs for 3 (out of 1440) intervals, with a 10 second sleep time, and in the normal traffic generation mode.
@@ -49,6 +49,7 @@ Here are the basic instructions to get going with the simulation framework
      - 1 : Syn Flood attack using `hping3`
      - 2 : Syn Flow Flood attack using `hping3`. This is a SYN flood with randomized source address to flood the OVS Switch flow tables
      - 3 : Port Scan attack using `nmap`
+   - If you run `s3fs.py` without any arguments it will run in the test mode with no attack traffic generation.
 
 ## Future work
 Some of the planned features to be added to S3FS include:
