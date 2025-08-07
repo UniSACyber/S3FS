@@ -14,13 +14,13 @@ ISLDATA_FILE = 'data/walker_delta_20.npy' # Path to the ISL data file
 NUM_NODES = 21 # Number of nodes in the network
 # This should match the number of nodes in the ISL data file
 
-CONTROLLER_IP = '127.0.0.1' # IP address of the controller
+CONTROLLER_IP = '192.168.56.10' # IP address of the controller
 # This should be the IP address of the controller running POX, ONOS, ODL, or any other SDN controller
 # If you are running the controller on a different machine, change this to the appropriate IP address
 # If you are running the controller on the same machine, you can leave it as is
 
 BROADCAST_IP = '10.0.0.255' # Broadcast IP address for the network
-OPENFLOW_VERSION = 'OpenFlow14' # OpenFlow version to use
+OPENFLOW_VERSION = 'OpenFlow10' # OpenFlow version to use; recommended 'OpenFlow10' for POX, 'OpenFlow13' for ODL or ONOS
 SIMULATION_INTERVAL = 60 # Simulation interval in seconds
 # This is the sleep time between simulation intervals, it can be changed to a lower value for faster simulations
 # or a higher value for slower simulations, depending on the use case
@@ -237,7 +237,7 @@ def initializeNetwork(graph):
     for n in graph.nodes:
         tmp_name = f's{n}'
         tmp_sat_node = f'h{n}'
-        addedSwitch = net.addSwitch(tmp_name, protocols="OpenFlow14")
+        addedSwitch = net.addSwitch(tmp_name, protocols=OPENFLOW_VERSION)
         # Add single host on designated switches
         addedHost = net.addHost(tmp_sat_node)
 
